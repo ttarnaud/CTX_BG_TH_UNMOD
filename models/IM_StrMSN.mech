@@ -1,0 +1,20 @@
+% Parameters
+%Gm=26;                  % Maximal conductance of the delayed rectifier K-channel
+Gm=15;                 % Parkinsonian maximal conductance of the delayed rectifier K-channel
+Vm=-100;                % K non-inactivating nernst potential (mV)
+
+% IC
+pMIC = 0; pMNoiseIC = 0;
+
+% Functions
+aP(X) = 1000*3.209*10^(-4)*(9*double(X+30==0)+(30+X)./(1-double(X+30~=0).*exp(-(X+30)/9))); % Rate constant alpha_p [1/s]
+bP(X) = -1000*3.209*10^(-4)*((-9)*double(X+30==0)+(30+X)./(1-double(X+30~=0).*exp((X+30)/9))); % Rate constant beta_p [1/s]
+
+IM_StrMSN(X,pM) = Gm*pM.*(X-Vm)
+
+% ODEs and ICs 
+pM' = aP(X)-(aP(X)+bP(X)).*pM
+pM(0) = pMIC+pMNoiseIC.*rand(1,Npop)
+
+% Interface 
+@current += -IM_StrMSN(X,pM)

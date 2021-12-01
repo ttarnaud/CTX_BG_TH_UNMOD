@@ -1,0 +1,24 @@
+% Parameters
+Gna=1000;               % Maximal conductance of the Na-channel (S/m^2)
+Vna=50;                 % Na nernst potential (mV)
+
+% IC
+mNaIC = 0; mNaNoiseIC = 0;
+hNaIC = 1; hNaNoiseIC = 0;
+
+% Functions
+aM(X) = 1000*0.32*(4*double(X+54==0)+(54+X)./(1-double(X+54~=0).*exp(-(X+54)/4)));  % Rate constant alpha_m [1/s]
+bM(X) = 1000*0.28*(5*double(X+27==0)+(27+X)./(-1+double(X+27~=0).*exp((X+27)/5)));  % Rate constant beta_m [1/s]
+aH(X) = 1000*0.128*exp(-(X+50)/18);  % Rate constant alpha_h [1/s]
+bH(X) = 1000*4./(1+exp(-(X+27)/5));  % Rate constant beta_h [1/s]
+
+INa_StrMSN(X,mNa,hNa) = Gna*mNa.^3.*hNa.*(X-Vna)
+
+% ODEs and ICs 
+mNa' = aM(X)-(aM(X)+bM(X)).*mNa
+mNa(0) = mNaIC+mNaNoiseIC.*rand(1,Npop)
+hNa' = aH(X)-(aH(X)+bH(X)).*hNa
+hNa(0) = hNaIC+hNaNoiseIC.*rand(1,Npop)
+
+% Interface 
+@current += -INa_StrMSN(X,mNa,hNa)

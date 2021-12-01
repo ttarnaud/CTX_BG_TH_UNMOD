@@ -1,0 +1,30 @@
+% Parameters
+GT = 30;                % Maximal conductance of low-threshold Ca2+ channels
+Rg = 8.314;             % Universal gas constant (J/(K*mol))
+Far = 96485.3329;       % Faraday constant (C/mol) 
+Temp = 309.15; 		    % Surrounding medium temperature (K)
+cCae = 2;               % Extracellular Ca2+ concentration (mol/m^3)
+
+% IC
+sTIC = 0; sTNoiseIC = 0;
+uTIC = 1; uTNoiseIC = 0;
+
+% Functions
+Sinf(X) = 1./(1+exp(-(X+52)/7.4));                       % Rest s-value [-]
+Uinf(X) = 1./(1+exp((X+80)/5));                          % rest u-value [-]
+tauS(X) = 10^(-3)*(1+0.33./(exp((X+27)/10)+exp(-(X+102)/15))); % Time constant [s] for s
+tauU(X) = 10^(-3)*(28.3+0.33./(exp((X+48)/4)+exp(-(X+407)/50))); % Time constant [s] for u
+
+IT_ThRE(X,sT,uT,CA) = GT*sT.^2.*uT.*(X-fVCa(@CA,cCae,Rg,Temp,Far))
+
+monitor IT_ThRE
+
+% ODEs and ICs 
+sT' = (Sinf(X)-sT)./tauS(X)
+sT(0) = sTIC+sTNoiseIC.*ones(1,Npop)
+uT' = (Uinf(X)-uT)./tauU(X)
+uT(0) = uTIC+uTNoiseIC.*ones(1,Npop)
+
+% Interface 
+@current += -IT_ThRE(X,sT,uT,CA)
+@IT_ThRE += IT_ThRE(X,sT,uT,CA)

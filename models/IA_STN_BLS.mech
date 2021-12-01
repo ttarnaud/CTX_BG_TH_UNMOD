@@ -1,0 +1,19 @@
+% Parameters
+GA =50;                 % Maximal conductance of A-type K channel (S/m^2)
+Vk=-90;                 % Potassium nernst potential (mV)
+
+% IC
+aAIC = 0; aANoiseIC = 0;
+bAIC = 1; bANoiseIC = 0;
+
+% Functions
+IA_STN(X,aA,bA) = GA*aA.^2.*bA.*(f1Veff(X,USstep(t))-Vk)
+
+% ODEs and ICs 
+aA' = f1rt(X,'a_a',USstep(t))-f1rt(X,'apb_a',USstep(t)).*aA
+aA(0) = aAIC+aANoiseIC.*rand(1,Npop)
+bA' = f1rt(X,'a_b',USstep(t))-f1rt(X,'apb_b',USstep(t)).*bA
+bA(0) = bAIC+bANoiseIC.*rand(1,Npop)
+
+% Interface 
+@current += -IA_STN(X,aA,bA) 

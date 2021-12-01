@@ -1,0 +1,26 @@
+% Parameters
+Gh = 0.175;             % Maximal conductance of hyperpolarization-activated mixed cationic current
+ginc = 2;               % Locked gate relative conductance (-)
+Vh = -40;               % Reversal potential of a hyperpolarization-activated mixed cationic current
+
+% IC
+whIC = 0; whNoiseIC = 0;
+wLockIC = 0; wLockNoiseIC = 0;
+hProteinIC = 0; hProteinNoiseIC = 0;
+
+% Functions
+Winf(X) = 1./(1+exp((X+75)/5.5));                        % Rest w-value [-]    
+tauW(X) = 10^(-3)./(exp(-14.59-0.086*X)+exp(-1.87+0.0701*X));  % Time-constant [s] for w
+
+Ih_ThTC(X,w,wLock) = Gh*(w+ginc*wLock).*(X-Vh) 
+
+% ODEs and ICs 
+wh' = (Winf(X).*(1-wLock)-wh)./tauW(X)
+wh(0) = whIC+whNoiseIC.*rand(1,Npop)
+wLock' = k3*(wh.*hProtein)-k4*wLock;
+wLock(0) = wLockIC+wLockNoiseIC.*rand(1,Npop)
+hProtein' = k1*((1-hProtein)*@CA_ThTC.^2)-k2*hProtein;
+hProtein(0) = hProteinIC+hProteinNoiseIC.*rand(1,Npop)
+
+% Interface 
+@current += -Ih_ThTC(X,w,wLock)

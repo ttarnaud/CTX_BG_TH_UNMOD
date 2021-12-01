@@ -1,0 +1,29 @@
+% Parameters
+GT=50;                  % Maximal conductance of T-type low-threshold Ca2+ channels (S/m^2)
+Rg = 8.314;             % Universal gas constant (J/(K*mol))
+Far = 96485.3329;       % Faraday constant (C/mol) 
+Temp = 309.15; 		    % Surrounding medium temperature (K)
+cCae = 2;               % Extracellular Ca2+ concentration (mol/m^3)
+
+% IC
+pTIC = 0; pTNoiseIC = 0;
+qTIC = 1; qTNoiseIC = 0;
+
+% Functions
+Pinf(X) =  1./(1+exp(-(X+56)./6.7));          % rest p-Value [-]
+Qinf(X) =  1./(1+exp((X+85)./5.8));           % rest q-Value [-]
+
+tauP(X) =  (10^(-3))*(5+0.33./(exp((X+27)/10)+exp(-(X+102)/15)));  % Time constant [s] for p
+tauQ(X) =  (10^(-3))*(400./(exp((X+50)/15)+exp(-(X+50)/16))); % Time constant [s] for q
+
+IT_STN(X,pT,qT) = GT*pT.^2.*qT.*(X-fVCa(@CA_STN,cCae,Rg,Temp,Far))
+
+% ODEs and ICs 
+pT' = (Pinf(X)-pT)./tauP(X)
+pT(0) = pTIC+pTNoiseIC.*rand(1,Npop)
+qT' = (Qinf(X)-qT)./tauQ(X)
+qT(0) = qTIC+qTNoiseIC.*rand(1,Npop)
+
+% Interface 
+@current += -IT_STN(X,pT,qT)
+@IT_STN += IT_STN(X,pT,qT)

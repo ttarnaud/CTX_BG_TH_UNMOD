@@ -1,0 +1,9 @@
+% Parameters
+Gl=3.5;                 % Maximal conductance of the non-Voltage-dependent non-specific ion channel (S/m^2)
+Vl=-60;                 % Leak nernst potential (mV)
+
+% SONIC effective parameter
+Ileak_STN(X) = Gl*(f1Veff(X,USstep(t))-Vl)
+
+% Interface 
+@current += -Ileak_STN(X)

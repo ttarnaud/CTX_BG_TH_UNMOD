@@ -1,0 +1,21 @@
+% Parameters
+Gk=50;                  % Maximal conductance of the K-channel (S/m^2)
+Vk=-75;                 % K nernst potential (mV)
+
+% IC
+hKIC = 1; hKNoiseIC = 0;
+
+% Functions
+Hinf(X) = 1./(1+exp((X+41)/4));            % rest m-value [-]
+tauaH(X) = 10^(3)*0.128*exp(-(X+46)/18);      
+taubH(X) = 10^(3)*4./(1+exp(-(X+23)/5));
+tauH(X) = 1./(tauaH(X)+taubH(X));             % Time constant [s] for h
+
+IK_ThRT(X,hK) = Gk.*(0.75*(1-hK)).^4.*(X-Vk)
+
+% ODEs and ICs 
+hK' = (Hinf(X)-hK)./tauH(X) 
+hK(0)=hKIC+hKNoiseIC.*rand(1,Npop) 
+
+% Interface 
+@current += -IK_ThRT(X,hK)

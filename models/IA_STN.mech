@@ -1,0 +1,25 @@
+% Parameters
+GA =50;                 % Maximal conductance of A-type K channel (S/m^2)
+Vk=-90;                 % Potassium nernst potential (mV)
+
+% IC
+aAIC = 0; aANoiseIC = 0;
+bAIC = 1; bANoiseIC = 0;
+
+% Functions
+Ainf(X) =  1./(1+exp(-(X+45)./14.7));          % rest a-value [-]
+Binf(X) =  1./(1+exp((X+90)./7.5));            % rest b-value [-]
+
+tauA(X) =  (10^(-3))*(1+1./(1+exp((X+40)/0.5))); % Time-constant [s] for a
+tauB(X) =  (10^(-3))*(200./(exp((X+60)/30)+exp(-(X+40)/10))); % Time constant [s] for b
+
+IA_STN(X,aA,bA) = GA*aA.^2.*bA.*(X-Vk)
+
+% ODEs and ICs 
+aA' = (Ainf(X)-aA)./tauA(X)
+aA(0) = aAIC+aANoiseIC.*rand(1,Npop)
+bA' = (Binf(X)-bA)./tauB(X)
+bA(0) = bAIC+bANoiseIC.*rand(1,Npop)
+
+% Interface 
+@current += -IA_STN(X,aA,bA) 

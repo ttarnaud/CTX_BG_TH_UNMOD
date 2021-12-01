@@ -1,0 +1,19 @@
+% Parameters
+Gk=300;                 % Maximal conductance of the delayed-rectifier K-channel (S/m^2)
+Vk=-80;                 % K nernst potential (mV)
+
+% IC
+nKIC = 0; nKNoiseIC = 0;
+
+% Functions
+Ninf(X) = 1./(1+exp(-(X+50)./14));         % rest n-value [-]
+tauN(X) = (10^(-3)/0.1)*(0.05+0.27./(1+exp((X+40)/12)));  % Time constant [s] for n
+
+IK_GPi(X,nK) = Gk*nK.^4.*(X-Vk)
+
+% ODEs and ICs 
+nK' = (Ninf(X)-nK)./tauN(X) 
+nK(0)=nKIC+nKNoiseIC.*rand(1,Npop) 
+
+% Interface 
+@current += -IK_GPi(X,nK)

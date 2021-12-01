@@ -1,0 +1,25 @@
+% Parameters
+GT = 4;                 % Maximal conductance of low-threshold Ca2+ channels
+VCa = 120;              % Nernst potential of Ca2+ (mV)
+Vx = -2;				% Shift Ca2+ voltage (mV)
+
+% IC
+sTIC = 0; sTNoiseIC = 0;
+uTIC = 1; uTNoiseIC = 0;
+
+% Functions
+Sinf(X) = 1./(1+exp(-(X+Vx+57)/6.2));					  % Rest s-value [-]
+Uinf(X) = 1./(1+exp((X+Vx+81)/4));				          % Rest u-value [-] 
+tauS(X) = 10^(-3)*((1/3.7)*(0.612+1./(exp(-((X+Vx+132)/16.7))+exp((X+Vx+16.8)/18.2))));  % Time-constant [s] for s
+tauU(X,Vx) = 10^(-3)*funtauu(X,Vx);                        % Time-constant [s] for u
+
+IT_LTSCAX(X,sT,uT) = GT*sT.^2.*uT.*(X-VCa)
+
+% ODEs and ICs 
+sT' = (Sinf(X)-sT)./tauS(X)
+sT(0) = sTIC+sTNoiseIC.*rand(1,Npop)
+uT' = (Uinf(X)-uT)./tauU(X)
+uT(0) = uTIC+uTNoiseIC.*rand(1,Npop)
+
+% Interface 
+@current += -IT_LTSCAX(X,sT,uT)

@@ -1,0 +1,22 @@
+% Parameters
+Gna=30;                 % Maximal conductance of the Na-channel (S/m^2)
+Vna=50;                 % Na nernst potential (mV)
+
+% IC
+hNaIC = 1; hNaNoiseIC = 0;
+
+% Functions
+Minf(X) = 1./(1+exp(-(X+37)/7));           % rest m-value [-]
+Hinf(X) = 1./(1+exp((X+41)/4));            % rest h-value [-]
+tauaH(X) = 10^(3)*0.128*exp(-(X+46)/18);      
+taubH(X) = 10^(3)*4./(1+exp(-(X+23)/5));
+tauH(X) = 1./(tauaH(X)+taubH(X));             % Time constant [s] for h
+
+INa_ThRT(X,hNa) = Gna*Minf(X).^3.*hNa.*(X-Vna)
+
+% ODEs and ICs 
+hNa' = (Hinf(X)-hNa)./tauH(X) 
+hNa(0)=hNaIC+hNaNoiseIC.*rand(1,Npop) 
+
+% Interface 
+@current += -INa_ThRT(X,hNa)

@@ -1,0 +1,11 @@
+% IC
+CAIC = 0.0001; CANoiseIC = 0;
+
+% ODEs 
+CA_GPi' = -10^(-4)*10^(3)*(0.1*@ICa_GPi+0.1*@IT_GPi+15*CA_GPi)
+CA_GPi(0) = CAIC+CANoiseIC.*rand(1,Npop); 
+
+% monitor CA 
+
+% Interface 
+@CA_GPi += CA_GPi 

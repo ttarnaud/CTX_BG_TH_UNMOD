@@ -1,0 +1,29 @@
+% Parameters
+GL=150;                 % Maximal conductance of L-type high-threshold Ca2+ channels (S/m^2)
+Rg = 8.314;             % Universal gas constant (J/(K*mol))
+Far = 96485.3329;       % Faraday constant (C/mol) 
+Temp = 309.15; 		    % Surrounding medium temperature (K)
+cCae = 2;               % Extracellular Ca2+ concentration (mol/m^3)
+
+% IC
+cLIC = 0; cLNoiseIC = 0;
+d1LIC = 1; d1LNoiseIC = 0;
+d2LIC = 1; d2LNoiseIC = 0;
+
+% Functions
+D2inf(kCA) = 1./(1+exp((kCA-0.1)./0.02));        % rest d2-Xalue [-]
+tauD2(kCA) = (10^(-3))*130; % Time constant [s] for d2
+
+IL_STN(X,cL,d1L,d2L) = GL*cL.^2.*d1L.*d2L.*(f1Veff(X,USstep(t))-fVCa(@CA_STN,cCae,Rg,Temp,Far))
+
+% ODEs and ICs 
+cL' = f1rt(X,'a_c',USstep(t))-f1rt(X,'apb_c',USstep(t)).*cL
+cL(0) = cLIC+cLNoiseIC.*rand(1,Npop)
+d1L' = f1rt(X,'a_d1',USstep(t))-f1rt(X,'apb_d1',USstep(t)).*d1L
+d1L(0) = d1LIC+d1LNoiseIC.*rand(1,Npop)
+d2L' = (D2inf(10^3.*@CA_STN)-d2L)./tauD2(10^3.*@CA_STN)
+d2L(0) = d2LIC+d2LNoiseIC.*rand(1,Npop)
+
+% Interface 
+@current += -IL_STN(X,cL,d1L,d2L) 
+@IL_STN += IL_STN(X,cL,d1L,d2L)

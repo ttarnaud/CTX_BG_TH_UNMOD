@@ -1,0 +1,7 @@
+% Parameters
+Gl=0.5                 % Maximal conductance of non-specific non-voltage dependent ion channel (S/m^2)  
+Vl=-70                 % Leak nernst potential (mV)
+
+Ileak_ThRT(X) = Gl.*(X-Vl)
+
+@current += -Ileak_ThRT(X)

@@ -1,0 +1,14 @@
+% Parameters
+tauCa = 5*10^(-3);      % Calcium decay time constant (s)
+deffCa = 100*10^(-9);   % The effective depth beneath the membrane area for calcium concentration calculations (m)
+Far = 96485.3329;       % Faraday constant (C/mol) 
+
+% IC
+CAIC = 0.0001; CANoiseIC = 0;
+
+% ODEs 
+CA_ThTC' = -10^(-3)*@IT_ThTC./(2*Far*deffCa)-CA_ThTC./tauCa
+CA_ThTC(0) = CAIC+CANoiseIC.*rand(1,Npop); 
+
+% Interface 
+@CA_ThTC += CA_ThTC 

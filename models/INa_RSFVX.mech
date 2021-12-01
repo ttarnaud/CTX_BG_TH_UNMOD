@@ -1,0 +1,27 @@
+% Parameters
+Gna = 500;				% Maximal conductance of the Na-channel (S/m^2)
+Vna = 50;               % Na nernst potential (mV)
+VT = -55;               % Spike treshold adjustment parameter (mV)
+
+% IC
+mNaIC = 0; mNaNoiseIC = 0;
+hNaIC = 1; hNaNoiseIC = 0;
+
+% Functions
+aM(X) = -1000*0.32*((-4)*double(X-VT-13==0)+...
+    ((X-VT-13)./(double(X-VT-13~=0)*exp(-((X-VT-13)/4))-1)));% Rate constant alpha_m [1/s]
+bM(X) = 1000*0.28*(5*double(X-VT-40==0)+...
+    (X-VT-40)./(double(X-VT-40~=0)*exp(((X-VT-40)/5))-1)); % Rate constant beta_m [1/s]
+aH(X) = 1000*0.128*exp(-((X-VT-17)/18));                % Rate constant alpha_h [1/s]
+bH(X) = (1000*4)./(1+exp(-((X-VT-40)/5)));               % Rate constant beta_h [1/s]
+
+INa_RSFVX(X,mNa,hNa) = Gna*mNa.^3.*hNa.*(X-Vna)
+
+% ODEs and ICs 
+mNa' = aM(X)-(aM(X)+bM(X)).*mNa
+mNa(0) = mNaIC+mNaNoiseIC.*rand(1,Npop)
+hNa' = aH(X)-(aH(X)+bH(X)).*hNa
+hNa(0) = hNaIC+hNaNoiseIC.*rand(1,Npop)
+
+% Interface 
+@current += -INa_RSFVX(X,mNa,hNa)

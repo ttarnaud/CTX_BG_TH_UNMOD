@@ -1,0 +1,19 @@
+% Parameters
+Gna=490;                % Maximal conductance of the Na-channel (S/m^2)
+Vna=60;                 % Na nernst potential (mV)
+
+% IC
+mNaIC = 0; mNaNoiseIC = 0;
+hNaIC = 1; hNaNoiseIC = 0;
+
+% Functions
+INa_STN(X,mNa,hNa) = Gna*mNa.^3.*hNa.*(f1Veff(X,USstep(t))-Vna)
+
+% ODEs and ICs 
+mNa' = f1rt(X,'a_m',USstep(t))-f1rt(X,'apb_m',USstep(t)).*mNa
+mNa(0) = mNaIC+mNaNoiseIC.*rand(1,Npop)
+hNa' = f1rt(X,'a_h',USstep(t))-f1rt(X,'apb_h',USstep(t)).*hNa
+hNa(0) = hNaIC+hNaNoiseIC.*rand(1,Npop)
+
+% Interface 
+@current += -INa_STN(X,mNa,hNa) 

@@ -1,0 +1,21 @@
+% Parameters
+GT=5;                   % Maximal conductance of T-type low threshold Ca2+ channel (S/m^2)
+VT=0;                   % Nernst potential of T-type Ca2+ channel (mV) 
+
+% IC
+rTIC = 0; rTNoiseIC = 0;
+
+% Functions
+Ainf(X) = 1./(1+exp(-(X+57)./2));          % rest a-value [-]
+Rinf(X) = 1./(1+exp((X+70)./2));           % rest r-value [-]
+tauR(X) = (10^(-3))*15;                    % Time constant [s] for r
+
+IT_GPi(X,rT) = GT*Ainf(X).^3.*rT.*(X-VT)
+
+% ODEs and ICs 
+rT' = (Rinf(X)-rT)./tauR(X)
+rT(0) = rTIC+rTNoiseIC.*rand(1,Npop)
+
+% Interface 
+@current += -IT_GPi(X,rT)
+@IT_GPi += IT_GPi(X,rT)

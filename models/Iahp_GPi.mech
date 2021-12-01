@@ -1,0 +1,9 @@
+% Parameters
+Gahp=100;               % Maximal conductance of the afterhyperpolarization K-channel (S/m^2)
+Vahp=-80;               % Nernst potential of the AHP-K channel (mV)
+
+% Functions
+Iahp_GPi(X,CA) = Gahp*(X-Vahp).*(@CA_GPi./(@CA_GPi+10));
+
+% Interface 
+@current += -Iahp_GPi(X,CA) 

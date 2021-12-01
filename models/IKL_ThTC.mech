@@ -1,0 +1,9 @@
+% Parameters
+GKL = 0.138;            % Maximal conductance of leak potassium currents
+Vk = -90;				% Potassium nernst potential (mV)
+
+% Functions
+IKL_ThTC(X) = GKL*(X-Vk)
+
+% Interface 
+@current += -IKL_ThTC(X)

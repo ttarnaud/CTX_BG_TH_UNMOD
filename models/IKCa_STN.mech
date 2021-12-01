@@ -1,0 +1,19 @@
+% Parameters
+GCa=10;                 % Maximal conductance of Ca2+ activated K-channel (S/m^2)
+Vk=-90;                 % Potassium nernst potential (mV)
+
+% IC
+rKCaIC = 0; rKCaNoiseIC = 0;
+
+% Functions
+Rinf(kCA) = 1./(1+exp(-(kCA-0.17)./0.08));  % rest r-value [-]
+tauR(kCA) = (10^(-3))*2;  % Time-constant [s] for r
+
+IKCa_STN(X,rKCa) = GCa.*rKCa.^2.*(X-Vk)
+
+% ODEs and ICs 
+rKCa' = (Rinf(10^3.*@CA_STN)-rKCa)./tauR(10^3.*@CA_STN)
+rKCa(0) = rKCaIC+rKCaNoiseIC.*rand(1,Npop)
+
+% Interface 
+@current += -IKCa_STN(X,rKCa) 

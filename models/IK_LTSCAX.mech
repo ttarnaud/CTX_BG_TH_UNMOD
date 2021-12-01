@@ -1,0 +1,21 @@
+% Parameters
+Gk = 50;				% Maximal conductance of the delayed-rectifier K-channel (S/m^2)
+Vk = -90;				% Potassium nernst potential (mV)
+VT = -55;               % Spike treshold adjustment parameter (mV)
+
+% IC
+nKIC = 0; nKNoiseIC = 0;
+
+% Functions
+aN(X) = -1000*0.032*((-5)*double(X-VT-15==0)+...
+    (X-VT-15)./(double(X-VT-15~=0)*exp(-((X-VT-15)/5))-1));% Rate constant alpha_n [1/s]
+bN(X) = 1000*0.5*exp(-(X-VT-10)/40);                    % Rate constant beta_n [1/s]
+
+IK_LTSCAX(X,nK) = Gk*nK.^4.*(X-Vk)
+
+% ODEs and ICs 
+nK' = aN(X)-(aN(X)+bN(X)).*nK
+nK(0) = nKIC+nKNoiseIC.*rand(1,Npop)
+
+% Interface 
+@current += -IK_LTSCAX(X,nK)

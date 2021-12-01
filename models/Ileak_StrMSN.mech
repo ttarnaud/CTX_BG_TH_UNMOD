@@ -1,0 +1,8 @@
+% Parameters
+Gl=1;                   % Maximal conductance of the non-voltage dependent non-specific ion channel (S/m^2)
+Vl=-67;                 % Leak nernst potential (mV)
+
+Ileak_StrMSN(X) = Gl*(X-Vl)
+
+% Interface 
+@current += -Ileak_StrMSN(X)

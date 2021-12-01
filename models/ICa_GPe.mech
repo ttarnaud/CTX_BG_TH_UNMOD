@@ -1,0 +1,12 @@
+% Parameters
+GCa=1.5;                % Maximal conductance of Ca2+ activated K-channel (S/m^2)
+VCa=120;                % Nernst potential of Ca2+ activated K-channel (mV)
+
+% Functions
+Sinf(X) = 1./(1+exp(-(X+35)./2));          % rest s-value [-]
+
+ICa_GPe(X) = GCa.*Sinf(X).^2.*(X-VCa)
+
+% Interface 
+@current += -ICa_GPe(X)
+@ICa_GPe += ICa_GPe(X)

@@ -1,0 +1,20 @@
+% Parameters
+Gm = 0.787;				% Maximal conductance of the slow non-inactivating K-channel (S/m^2)
+Vk = -90;				% Potassium nernst potential (mV)
+taumax = 502*10^(-3);   % Decay time constant slow non-inactivating K+ (s)
+
+% IC
+pMIC = 0; pMNoiseIC = 0;
+
+% Functions
+Pinf(X) = 1./(1+exp(-((X+35)/10)));                      % Rest p-value [-]
+tauP(X) = taumax./(3.3*exp((X+35)/20)+exp(-(X+35)/20));  % Time-constant [s] for p 
+
+IM_FS(X,pM)=Gm*pM.*(X-Vk)
+
+% ODEs and ICs 
+pM' = (Pinf(X)-pM)./tauP(X)
+pM(0) = pMIC+pMNoiseIC.*rand(1,Npop)
+
+% Interface 
+@current += -IM_FS(X,pM)

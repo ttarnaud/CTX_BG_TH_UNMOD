@@ -1,0 +1,16 @@
+% Parameters
+Gk=570;                 % Maximal conductance of the delayed-rectifier K-channel (S/m^2)
+Vk=-90;                 % Potassium nernst potential (mV)
+
+% IC
+nKIC = 0; nKNoiseIC = 0;
+
+% Functions
+IK_STN(X,nK) = Gk*nK.^4.*(f1Veff(X,USstep(t))-Vk)
+
+% ODEs and ICs 
+nK' = f1rt(X,'a_n',USstep(t))-f1rt(X,'apb_n',USstep(t)).*nK
+nK(0) = nKIC+nKNoiseIC.*rand(1,Npop)
+
+% Interface 
+@current += -IK_STN(X,nK) 
