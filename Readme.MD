@@ -2,7 +2,8 @@ This code implements the cortex-basal ganglia-thalamus model used in Tarnaud et 
 The neuronal network is based on Kumaravelu et al. (2016) [2] and on the cortical network 
 from Plaksin et al. (2016) [3], Hayut et al. (2011) [4] and Vierling-Claassen et al. (2010) [5] 
 
-The result is a completely biophysical HH-based network of the basal-ganglia-thalamus-cortex loop with ultrasonic coupling
+The result is a completely biophysical HH-based network of the basal-ganglia-thalamus-cortex loop with ultrasonic coupling.
+
 Coupling with ultrasound is included via the SONIC-model (Lemaire et al. 2019 [6]).
 
 1 Matlab scripts
