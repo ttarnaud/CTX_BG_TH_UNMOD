@@ -144,7 +144,7 @@ Cm0 = [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0
 cma=[11.88*10^(-9),11.88*10^(-9),1,10.17*10^(-9),10.17*10^(-9),1,25*10^(-9),...
     25*10^(-9),29*10^(-9),14*10^(-9),1,1,1,1,1];
 RthFSRS = 1.4; % FS to RS thalamic input current ratio RTH
-IthRS = 0.17*10^(-9); % Thalamic DC current input to the RS neuron (A) (In this file: no explicit Th-cells)
+IthRS = 0.17*10^(-9); % Thalamic DC current input to the RS neuron (A) 
 % Injected current (A/m^2) ---- Current implementation: DC-current injection
 Iapp = [0*IthRS, 0, 0, 0*RthFSRS*IthRS, 0, 0, 0, 0, 0, 0, 0.012, 0, 0.03, 0.03, 0]./cma;
 Iapp = Iapp+CorrIappPD./cma;
