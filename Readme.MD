@@ -8,17 +8,17 @@ Coupling with ultrasound is included via the SONIC-model (Lemaire et al. 2019 [6
 
 1 Matlab scripts
 --------------------------------------------------
-Install Dynasim: https://github.com/DynaSim/DynaSim [7].
+Install Dynasim: https://github.com/DynaSim/DynaSim [7]. \
 Install chronux: http://chronux.org/  [8]
 
-Dynasim and chronux should be added to the MATLAB path
+Dynasim and chronux should be added to the MATLAB path. \
 Simulations were performed on MATLAB/R2017a, with the attached Dynasim version (Dynasim-master)
 
 Compile nakeinterp1 to .mex 
 
 1.1 Main script 
 ---------------
-- run_ES_NN_PDon.m - the main Parkinsonian network
+- run_ES_NN_PDon.m - the main Parkinsonian network \
 Parameter sweeps performed for [1] can be found in the subfolder /Parameter sweeps
 
 1.2 Membrane dynamics 
@@ -57,19 +57,19 @@ This folder contains the scripts used to gerenate the plots from the simulation 
 ------------------------------------------------
 The following folder-structure is used in the plot-function scripts:
 
-CW - continuous wave 
+CW - continuous wave \
 DBS - pulsed 
 
-US - Ultrasound
+US - Ultrasound \
 ES - Electrostimulation
 
-Inphase/Outphase : combined electroultrasonic stimulation (cEUS) in phase and alternating, respectively
+Inphase/Outphase : combined electroultrasonic stimulation (cEUS) in phase and alternating, respectively \
 PD : Parkinson's disease (no stimulation)
 
-fUS500kHz or fUS700kHz - 500 kHz or 700 kHz fundamental ultrasound frequency 
+fUS500kHz or fUS700kHz - 500 kHz or 700 kHz fundamental ultrasound frequency \
 tauES100us or tauES300us - 100 us or 300 us electrical pulsewidth
 
-USi : ultrasound intensity (followed by number in W/m^2)
+USi : ultrasound intensity (followed by number in W/m^2) \
 ESi : electrostimulation current (followed by A/m^2)
 
 _spikes : reduced data (containing spike timing) is saved
@@ -84,26 +84,18 @@ For example: save the data_... files obtained by running the run_ES_NN_CWUS_700k
 References
 -------------
 [1] Tarnaud et al. (2021), Improved alpha-beta power reduction via combined Electrical and Ultrasonic stimulation in a Parkinsonian Cortex-Basal 
-Ganglia-Thalamus Computational Model, Journal of Neural Engineering.
-
+Ganglia-Thalamus Computational Model, Journal of Neural Engineering. \
 [2] Kumaravelu et al. (2016) A biophysical model of the cortex-basal ganglia-thalamus network in the 6-OHDA lesioned rat model of Parkinson's
-disease. Journal of computational neuroscience, 40(2), 207-229
-
+disease. Journal of computational neuroscience, 40(2), 207-229 \
 [3] Plaksin et aL. (2016) Cell-type-selective effects of intramembrane cavitation as a unifying theoretical framework for ultrasonic 
-neuromodulation. Eneuro, 3(3).
-
-[4] Hayut et al. (2011) LTS and FS inhibitory interneurons, short-term synaptic plasticity, and cortical circuit dynamics. PLoS computational biology, 7(10), e1002248.
-
+neuromodulation. Eneuro, 3(3). \
+[4] Hayut et al. (2011) LTS and FS inhibitory interneurons, short-term synaptic plasticity, and cortical circuit dynamics. PLoS computational biology, 7(10), e1002248. \
 [5] Vierling-Claassen (2010) Computational modeling of distinct neocortical oscillations driven by cell-type selective optogenetic drive: separable resonant circuits controlled 
-by low-threshold spiking and fast-spiking interneurons. Frontiers in human neuroscience, 4, 198.
-
+by low-threshold spiking and fast-spiking interneurons. Frontiers in human neuroscience, 4, 198. \
 [6] Lemaire, T. et al. (2019). Understanding ultrasound neuromodulation using a computationally efficient and interpretable model of intramembrane cavitation. 
-Journal of neural engineering, 16(4), 046007.
-
-[7] Sherfey J. et al. (2018) DynaSim: A MATLAB Toolbox for Neural Modeling and Simulation. Front. Neuroinform. 12:10. doi: 10.3389/fninf.2018.00010
-
-[8] Observed Brain Dynamics, Partha Mitra and Hemant Bokil, Oxford University Press, New York, 2008.
-
+Journal of neural engineering, 16(4), 046007. \
+[7] Sherfey J. et al. (2018) DynaSim: A MATLAB Toolbox for Neural Modeling and Simulation. Front. Neuroinform. 12:10. doi: 10.3389/fninf.2018.00010 \
+[8] Observed Brain Dynamics, Partha Mitra and Hemant Bokil, Oxford University Press, New York, 2008. \
 [9] Jonathan C. Lansey (2021). Beautiful and distinguishable line colors + colormap 
 (https://www.mathworks.com/matlabcentral/fileexchange/42673-beautiful-and-distinguishable-line-colors-colormap), MATLAB Central File Exchange. Retrieved October 18, 2021.
 
