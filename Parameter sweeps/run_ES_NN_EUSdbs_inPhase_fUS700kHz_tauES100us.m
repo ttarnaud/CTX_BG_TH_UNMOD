@@ -114,7 +114,6 @@ modelName = 'STN';      % Insonicated nucleus name
 USps=3.5;                 % Start of insonication [s]
 USpd = 5;               % Insonication duration [s]
 USfreq = 700e3;         % Fundamental frequency [Hz] 
-% In run_ES_NN_EUSdbs_inPhase, we use 700 kHz for comparison with single-neuron sims 
 USdc = (500e-6)*100;    % Duty cycle [-]
 USprf = 100; % Pulse repetition frequency [Hz]
 USisppa = InPhaseUSiRange(iii);            % Spatial peak pulse averaged intensity [W/m^2] 
@@ -127,7 +126,7 @@ gateMultip = 1;         % Gate multiplier [-] - TODO - now only default 1
 maxRate = 1e6;          % Max allowable rate [1/s]
 % ---------------------------ELECTRICAL DBS--------------------------------
 dbsA = [0,0,0*3,0,0,0*3,0,0,0,0,0,InPhaseESiRange(jjj),0,0,0]; % Intensity [A/m^2]
-dbsPW = [0,0,0*300e-6,0,0,0*300e-6,0,0,0,0,0,100e-6,0,0,0]; % Pulse width [s]  % In run_ES_NN_EUSdbs_inPhase we use dbs with 100e-6 s for comparison with single neuron sims
+dbsPW = [0,0,0*300e-6,0,0,0*300e-6,0,0,0,0,0,100e-6,0,0,0]; % Pulse width [s] 
 dbsF = [0,0,0*1,0,0,0*1,0,0,0,0,0,100,0,0,0]; % Frequency [Hz]
 dbsPS = [0,0,0,0,0,0,0,0,0,0,0,3.5,0,0,0]; % Pulse start [s]
 dbsPD = [0,0,0,0,0,0,0,0,0,0,0,5,0,0,0]; % Pulse duration [s]
